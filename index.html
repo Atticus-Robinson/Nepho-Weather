@@ -6,21 +6,59 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>***TITLE HERE***</title>
-    <meta name="description" content="***INFORMATION HERE***">
+    <title>Nepho Weather App</title>
+    <meta name="description" content="Weather App for Getting Weather Info at an Inputted Zip Code">
     <meta name="author" content="Canyon">
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300&family=Rubik:wght@300&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/style.css" />
 </head>
 
 <body>
-    <header></header>
-    <main></main>
-    <footer></footer>
+    <header class="valign-wrapper indigo lighten-3">
+        <h3 class="white-text">Weather Dashboard</h3>
+    </header>
+    <main class="row">
+        <div class="search col s3">
+            <div class="input-field location-input">
+                <input type="text" placeholder="Location" id="location">
+                <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+            <div class="search-history collection">
+                <a class="collection-item">Alvin</a> 
+                <a class="collection-item">Alvin</a>  
+                <a class="collection-item">Alvin</a>  
+                <a class="collection-item">Alvin</a>
+                <a class="collection-item">Alvin</a>
+                <a class="collection-item">Alvin</a> 
+                <a class="collection-item">Alvin</a>
+                <a class="collection-item">Alvin</a>
+                <a class="collection-item">Alvin</a>
+                <a class="collection-item">Alvin</a>
+                <a class="collection-item">Alvin</a>
+            </div>
+        </div>
+        <div class="weather col s9">
+            <div class="weather-info"></div>
+            <div class="5-day"></div>
+        </div>
+    </main>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="./assets/js/scipt.js"></script>
 </body>
+
+<footer>
+    Canyon Pages
+</footer>
 
 </html>
