@@ -27,19 +27,37 @@ footer {
     height: 3vh;
 }
 
-.search {
-    height: 100%;
-    outline: 1px solid #9fa8da;
+input {
+    font-family: 'Rubik', sans-serif !important;
 }
 
-.weather {
-    outline: 1px solid #9fa8da;
+.input-field input[type=text]:focus {
+    border-bottom: 2px rgb(159, 198, 218) solid !important;
+    box-shadow: none !important;
+    transition: none;
 }
 
-.location-input {}
+.collection {
+    border: none !important;
+}
+
+.collection-item {
+    font-family: 'Rubik', sans-serif !important;
+    font-style: 400 !important;
+    letter-spacing: 0.05rem;
+    white-space: nowrap;
+    overflow: hidden;
+    border: 1px solid #e0e0e0 !important;
+}
+
+.weather {}
+
+.btn {
+    background-color: rgb(159, 198, 218) !important;
+}
 
 .search-history {
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     max-height: 75%;
 }
