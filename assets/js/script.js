@@ -58,7 +58,12 @@ function createHistoryItem(admin1, admin2, country) {
         .attr('id', admin1)
         .text(admin1 + ', ' + admin2 + ', ' + country);
     
+    storeHistoryItem(admin1);
     $('.search-history').prepend(historyItem);
+}
+
+function storeHistoryItem(item) {
+
 }
 
 function createInfoPage() {
