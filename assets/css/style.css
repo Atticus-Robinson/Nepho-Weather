@@ -121,8 +121,9 @@ li:hover {
     flex-grow: 2;
 }
 
-.containerW > span {
-    flex-grow: 2;
+.uvSpan {
+    padding: 0 1rem;
+    border-radius: 0.25rem;
 }
 
 .weather-info h4 {

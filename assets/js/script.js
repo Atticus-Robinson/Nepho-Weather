@@ -2,6 +2,9 @@ var searchText;
 var googleData, weatherData;
 var objectMatch;
 var fadeStatus;
+var uvCat = '';
+var uvColor = '';
+var uvText = '';
 const coordinates = {};
 const weather = {};
 const historyArray = [];
@@ -147,9 +150,11 @@ function createInfoPage(weatherObject, locationName) {
             var humidity = $('<p>')
                 .addClass('current-humidity' + '%')
                 .text('Humidity: ' + weatherObject.current.humidity);
-            var uvIndex = $('<span>')
-                .addClass('current-uv')
-                .text('UV Index: ' + weatherObject.current.uvi)
+            uvChecker(weatherObject.current.uvi);
+            var uvIndex = $('<p>')
+                .addClass('current-uv ')
+                .html(uvCat + ' UV Index: <span class="' + uvColor + ' ' + uvText + ' uvSpan">' + weatherObject.current.uvi + "</span>");
+
 
             $('.containerW').html('');
             $('.containerW').append(location, date, temp, wind, humidity, uvIndex);
@@ -176,9 +181,12 @@ function createInfoPage(weatherObject, locationName) {
         var humidity = $('<p>')
             .addClass('current-humidity' + '%')
             .text('Humidity: ' + weatherObject.current.humidity);
-        var uvIndex = $('<span>')
-            .addClass('current-uv')
-            .text('UV Index: ' + weatherObject.current.uvi)
+        uvChecker(weatherObject.current.uvi);
+        var uvIndex = $('<p>')
+            .addClass('current-uv ')
+            .html(uvCat + ' UV Index: <span class="' + uvColor + ' ' + uvText + ' uvSpan">' + weatherObject.current.uvi + "</span>");
+
+
 
         $('.containerW').html('');
         $('.containerW').append(location, date, temp, wind, humidity, uvIndex);
@@ -278,6 +286,35 @@ function outFade() {
             .removeClass('fade-in-day')
     }
     $('.fade-panel').fadeOut(1000).attr('fade-status', 'out');
+}
+
+function uvChecker(uvIndex) {
+    uvIndex = parseInt(uvIndex);
+    console.log(uvIndex);
+    console.log(uvCat + ' ' + uvColor + ' ' + uvText);
+    if (uvIndex <= 2) {
+        console.log(uvIndex)
+        uvCat = 'Low';
+        uvColor = 'green';
+        uvText = 'white-text'
+    } else if (uvIndex >= 3 && uvIndex <= 5) {
+        uvCat = 'Moderate';
+        uvColor = 'yellow';
+        uvText = 'black-text';
+    } else if (uvIndex >= 6 && uvIndex <= 7) {
+        uvCat = 'High';
+        uvColor = 'orange';
+        uvText = 'black-text';
+    } else if (uvIndex >= 8 && uvIndex <= 10) {
+        uvCat = 'Very High';
+        uvColor = 'red';
+        uvText = 'white-text';
+    } else if (uvIndex >= 11) {
+        uvCat = 'Extreme';
+        uvColor = 'black';
+        uvText = 'white';
+    }
+    console.log(uvCat + ' ' + uvColor + ' ' + uvText);
 }
 
 //Submit click event/enter
