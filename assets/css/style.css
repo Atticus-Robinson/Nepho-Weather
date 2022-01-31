@@ -99,6 +99,7 @@ input {
 
 .weather-info h4 {
     height: 43%;
+    margin-bottom: 1rem !important;
 }
 
 .weather-info > p, span {
