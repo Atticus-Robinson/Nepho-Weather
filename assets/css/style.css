@@ -60,6 +60,15 @@ input {
     max-height: 75%;
 }
 
+li {
+    cursor: pointer;
+}
+
+li:hover {
+    background-color: rgb(159, 168, 218) !important;
+    color: white;
+}
+
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -91,26 +100,35 @@ input {
     border: 3px solid rgb(180, 159, 218);
     padding-left: 1rem;
     margin: 0 !important;
+    box-sizing: border-box;
 }
 
 .fade-panel {
     display: none;
     width: 100%;
     height: 100%;
-    flex-direction: column;
+}
 
-    box-sizing: border-box;
-    justify-content: flex-start;
+.containerW {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.containerW > p {
+    flex-grow: 2;
+}
+
+.containerW > span {
+    flex-grow: 2;
 }
 
 .weather-info h4 {
     height: 43%;
-    margin-bottom: 1rem !important;
-}
-
-.weather-info>p,
-span {
-    flex-grow: 2;
+    padding-bottom: 15vh !important;
+    box-sizing: border-box;
 }
 
 .weather-info * {
@@ -127,9 +145,14 @@ span {
     border: 3px solid rgb(159, 198, 218);
 }
 
-.five-day>.day {
+.day {
     box-sizing: border-box;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 1.5rem 0;
     opacity: 0;
     width: 18%;
     height: 80%;
@@ -150,6 +173,16 @@ span {
     animation: fadeOut 1000ms;
     -webkit-animation-fill-mode: backwards;
     animation-fill-mode: backwards;
+}
+
+.day p {
+    margin: 0 !important;
+    height: 16%;
+}
+
+.day img {
+    width: 25%;
+    height: auto;
 }
 
 .fade-in-day:nth-child(5n+1) {

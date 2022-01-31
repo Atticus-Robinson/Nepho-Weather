@@ -1,6 +1,7 @@
 var searchText;
 var googleData, weatherData;
 var objectMatch;
+var fadeStatus;
 const coordinates = {};
 const weather = {};
 const historyArray = [];
@@ -96,7 +97,7 @@ function createHistoryItem(googleDataObject) {
         storeHistoryItem(shortArray[0], shortArray[1]);
         $('.search-history').prepend(historyItem);
     } else {
-        return;
+        return same;
     }
 }
 
@@ -125,12 +126,11 @@ function createInfoPage(weatherObject, locationName) {
     luxonObject = luxon.DateTime.now().setZone(timezone);
     var dateDisplay = luxonObject.toLocaleString(luxon.DateTime.DATETIME_HUGE);
     var iconCode = weatherObject.current.weather[0].icon;
-    var fadeStatus = $('.fade-panel').attr('fade-status');
+    fadeStatus = $('.fade-panel').attr('fade-status');
 
     if (fadeStatus === 'in') {
         outFade()
         setTimeout(function () {
-            console.log('fade in panel');
             inFade();
             var location = $('<h4>')
                 .addClass('info-location')
@@ -151,16 +151,15 @@ function createInfoPage(weatherObject, locationName) {
                 .addClass('current-uv')
                 .text('UV Index: ' + weatherObject.current.uvi)
 
-            $('.fade-panel').html('');
-            $('.fade-panel').append(location, date, temp, wind, humidity, uvIndex);
-        }, 1500)
+            $('.containerW').html('');
+            $('.containerW').append(location, date, temp, wind, humidity, uvIndex);
+        }, 1100)
     }
 
 
 
 
     if (!fadeStatus) {
-        console.log('fade in panel');
         inFade();
         var location = $('<h4>')
             .addClass('info-location')
@@ -181,27 +180,88 @@ function createInfoPage(weatherObject, locationName) {
             .addClass('current-uv')
             .text('UV Index: ' + weatherObject.current.uvi)
 
-        $('.fade-panel').html('');
-        $('.fade-panel').append(location, date, temp, wind, humidity, uvIndex);
+        $('.containerW').html('');
+        $('.containerW').append(location, date, temp, wind, humidity, uvIndex);
     }
 }
 
 function create5Day(weatherObject) {
-
     let timezone = weatherObject.timezone;
     luxonObject = luxon.DateTime.now().setZone(timezone);
-    $('.five-day > div').each(function () {
-        let increment = ($(this).attr('id'));
-        var date = luxon.DateTime.now().plus({
-            days: increment
-        });
-        var dateDisplay = date.toLocaleString(luxon.DateTime.DATE_SHORT);
-        $(this).text(dateDisplay);
-    })
+    if (fadeStatus === 'in') {
+        setTimeout(function () {
+            $('.five-day > div').each(function () {
+                let increment = ($(this).attr('id'));
+
+                var date = luxon.DateTime.now().plus({
+                    days: increment
+                });
+                var dateDisplay = $('<p>')
+                    .addClass('card-date')
+                    .text(date.toLocaleString(luxon.DateTime.DATE_SHORT));
+
+                var iconCode = weatherObject.daily[increment].weather[0].icon;
+                var icon = $('<img>')
+                    .addClass('card-icon')
+                    .attr('src', 'http://openweathermap.org/img/wn/' + iconCode + '@2x.png')
+
+                var high = weatherObject.daily[increment].temp.max;
+                var low = weatherObject.daily[increment].temp.min;
+                var temp = $('<p>')
+                    .addClass('card-temp')
+                    .text(low + '/' + high);
+
+                var wind = $('<p>')
+                    .addClass('card-wind')
+                    .text(weatherObject.daily[increment].wind_speed + 'mph')
+
+                var humidity = $('<p>')
+                    .addClass('card-humidity')
+                    .text(weatherObject.daily[increment].humidity + '%')
+
+                $(this).html('');
+                $(this).append(dateDisplay, icon, temp, wind, humidity);
+            })
+        }, 1490)
+    }
+    if (!fadeStatus) {
+        $('.five-day > div').each(function () {
+            let increment = ($(this).attr('id'));
+
+            var date = luxon.DateTime.now().plus({
+                days: increment
+            });
+            var dateDisplay = $('<p>')
+                .addClass('card-date')
+                .text(date.toLocaleString(luxon.DateTime.DATE_SHORT));
+
+            var iconCode = weatherObject.daily[increment].weather[0].icon;
+            var icon = $('<img>')
+                .addClass('card-icon')
+                .attr('src', 'http://openweathermap.org/img/wn/' + iconCode + '@2x.png')
+
+            var high = weatherObject.daily[increment].temp.max;
+            var low = weatherObject.daily[increment].temp.min;
+            var temp = $('<p>')
+                .addClass('card-temp')
+                .text(low + '/' + high);
+
+            var wind = $('<p>')
+                .addClass('card-wind')
+                .text(weatherObject.daily[increment].wind_speed + 'mph')
+
+            var humidity = $('<p>')
+                .addClass('card-humidity')
+                .text(weatherObject.daily[increment].humidity + '%')
+            $(this).html('');
+
+            $(this).append(dateDisplay, icon, temp, wind, humidity);
+        })
+    }
 }
 
+
 function inFade() {
-    console.log('fade-in');
     for (let i = 1; i < 6; i++) {
         $('.five-day > #' + i)
             .removeClass('fade-out-day')
@@ -241,6 +301,7 @@ $('#location').keypress(function (e) {
 $('.search-history').on('click', 'li', function (event) {
     event.preventDefault();
     var itemText = ($(event.target).text());
+    displayWeather(itemText);
 })
 
 
