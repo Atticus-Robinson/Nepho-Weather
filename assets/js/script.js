@@ -1,10 +1,6 @@
 var searchText;
 var googleData, weatherData;
 var objectMatch;
-var options = {
-    valueNames: ['name']
-}
-var historyList = new List('users', options);
 const coordinates = {};
 const weather = {};
 const historyArray = [];
@@ -80,8 +76,9 @@ function createHistoryItem(googleDataObject) {
         }
     });
     if (same === 0) {
-        historyItem = $('<li>')
-            .addClass('collection-item sort')
+        var historyItem = $('<li>')
+            .addClass('collection-item sort name')
+            .attr('name', string)
             .text(string);
         for (var x in object) {
             if (object[x]) {
@@ -146,4 +143,4 @@ $('.search-history').on('click', 'li', function (event) {
     var itemText = ($(event.target).text());
 })
 
-//retieveHistory();
+retieveHistory();
