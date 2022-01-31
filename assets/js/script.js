@@ -1,95 +1,126 @@
 var searchText;
 var googleData, weatherData;
+var objectMatch;
+var options = {
+    valueNames: ['name']
+}
+var historyList = new List('users', options);
+const coordinates = {};
+const weather = {};
 const historyArray = [];
 
-function getWeatherInfo(inputLocation) {
-    var coordinates = latLonConvert(inputLocation);
-    var latitude = coordinates.lat;
-    var longitude = coordinates.long;
-    console.log(latitude);
-    console.log(longitude);
-    var apiUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + latitude + '&lon=' + longitude + '&appid=bb91dbeea5be1f229728f70ee62875cc'
-    fetch(apiUrl).then(function (response) {
-        if (response.ok) {
-            response.json().then(function (weatherData) {
-                console.log(weatherData);
-            })
-        }
-    })
-}
-
-function latLonConvert(location) {
+async function convert(location) {
     var googApi = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + location + '&key=AIzaSyD3SFsjzLRJjuS7MuUlRnfQT8kgo7iMIaQ'
-    fetch(googApi).then(function (response) {
-        if (response.ok) {
-            response.json().then(function (googleData) {
-                var lat = googleData.results[0].geometry.location.lat;
-                var long = googleData.results[0].geometry.location.lng;
-                console.log(lat, long);
-                return {lat, long};
-            })
-        }
-    })
+    var fetchReponse = await fetch(googApi);
+    if (fetchReponse.ok) {
+        var googleData = await fetchReponse.json();
+    }
+    return googleData;
 }
 
-function createHistoryItem(inputText) {
-    console.log(googleData);
-    /*var check;
-    var same;
+async function getWeatherInfo(googleObject) {
 
+    coordinates.lat = googleObject.results[0].geometry.location.lat;
+    coordinates.long = googleObject.results[0].geometry.location.lng;
+    var apiUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + coordinates.lat + '&lon=' + coordinates.long + '&appid=bb91dbeea5be1f229728f70ee62875cc'
+    var fetchResponse = await fetch(apiUrl)
+    if (fetchResponse.ok) {
+        var weatherData = await fetchResponse.json()
+    }
+    return weatherData;
+}
 
-    data.results[0].address_components.forEach(function (item) {
+async function displayWeather(text) {
+    let googleData = await convert(text);
+    createHistoryItem(googleData);
+    let weatherData = await getWeatherInfo(googleData);
+    createInfoPage(weatherData);
+    create5Day(weatherData);
+}
+
+function createHistoryItem(googleDataObject) {
+    var same = 0;
+    var shortArray = [];
+    const object = {
+        neighborhood: '',
+        city: '',
+        admin1: '',
+        country: ''
+    };
+    console.log(googleDataObject);
+    googleDataObject.results[0].address_components.forEach(function (item) {
         switch (item.types[0]) {
+            case 'neighborhood':
+                object.neighborhood = item.long_name;
+                break;
             case 'locality':
-                city = item.long_name;
+                object.city = item.long_name;
                 break;
             case 'administrative_area_level_1':
-                admin1 = item.long_name;
+                object.admin1 = item.long_name;
                 break;
             case 'country':
-                country = item.short_name;
+                object.country = item.short_name;
                 break;
             default:
                 break;
         }
     })
-    $('.search-history > li').each(function (index) {
-        check = ($(this).attr('id'));
-        if (check === admin1) {
-            same = false;
-            return;
-        } else {}
+    if (object.neighborhood === '') {
+        var string = object.city + ', ' + object.admin1 + ', ' + object.country;
+    } else {
+        var string = object.neighborhood + ', ' + object.city + ', ' + object.admin1 + ', ' + object.country;
+    }
+    $(".collection > li").each(function () {
+        var check = ($(this).text());
+        if (check === string) {
+            console.log('match');
+            same++;
+            return same;
+        }
     });
-    if (same === false) return;
-    var historyItem = $('<li>')
-        .addClass('collection-item')
-        .attr('id', admin1)
-        .text(admin1 + ', ' + admin2 + ', ' + country);
+    if (same === 0) {
+        historyItem = $('<li>')
+            .addClass('collection-item sort')
+            .text(string);
+        for (var x in object) {
+            if (object[x]) {
+                shortArray.push(object[x]);
+            }
 
-    $('.search-history').prepend(historyItem);*/
+        }
+        storeHistoryItem(shortArray[0]);
+        $('.search-history').prepend(historyItem);
+    } else {
+        return;
+    }
 }
 
-function storeHistoryItem(item) {
-    historyArray.unshift(item);
+function storeHistoryItem(arrayItem) {
+    historyArray.unshift(arrayItem);
     var string = JSON.stringify(historyArray);
-    localStorage.setItem("nepho-search-history", string);
+    localStorage.setItem('nepho-history', string);
 }
 
 function retieveHistory() {
-    var storage = localStorage.getItem("nepho-search-history");
+    var storage = localStorage.getItem('nepho-history');
     var array = JSON.parse(storage);
-    array.forEach(function (currentValue) {
-        historyArray.push(currentValue);
+    array.forEach(function (item, index) {
+        convert(item).then(function (response) {
+            createHistoryItem(response);
+        });
+        
     })
-    console.log(historyArray);
-}
 
-function createInfoPage() {
 
 }
 
-function create5Day() {
+function createInfoPage(weatherObject) {
+    //console.log(weatherObject);
+}
 
+function create5Day(weatherObject) {
+    //console.log(weatherObject);
 }
 
 //Submit click event/enter
@@ -97,24 +128,22 @@ $('#search-button').on('click', function () {
     searchText = $('#location').val();
     $('#location').val('');
     if (searchText) {
-        getWeatherInfo(searchText);
-        storeHistoryItem(searchText);
+        displayWeather(searchText);
     }
 })
-
 $('#location').keypress(function (e) {
     if (e.which == 13) {
         searchText = $('#location').val();
         $('#location').val('');
         if (searchText) {
-            getWeatherInfo(searchText);
-            storeHistoryItem(searchText);
+            displayWeather(searchText);
         }
     }
 });
 
 $('.search-history').on('click', 'li', function (event) {
     event.preventDefault();
+    var itemText = ($(event.target).text());
 })
 
-retieveHistory();
+//retieveHistory();

@@ -45,7 +45,6 @@ input {
     font-family: 'Rubik', sans-serif !important;
     font-style: 400 !important;
     letter-spacing: 0.05rem;
-    white-space: nowrap;
     overflow: hidden;
     border: 1px solid #e0e0e0 !important;
 }
