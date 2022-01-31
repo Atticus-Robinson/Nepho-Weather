@@ -127,8 +127,10 @@ li:hover {
 
 .weather-info h4 {
     height: 43%;
-    padding-bottom: 15vh !important;
     box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
 }
 
 .weather-info * {
