@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <header class='valign-wrapper indigo lighten-3'>
+    <header class='valign-wrapper'>
         <h3 class='white-text'>Weather Dashboard</h3>
     </header>
     <main class='row grey lighten-5'>
@@ -36,13 +36,21 @@
             </ul>
         </div>
         <div class='weather col s9'>
-            <div class='weather-info'></div>
-            <div class='5-day'></div>
+            <div class='weather-info row'></div>
+            <div class='five-day'>
+                <div class="day" id="1"></div>
+                <div class="day" id="2"></div>
+                <div class="day" id="3"></div>
+                <div class="day" id="4"></div>
+                <div class="day" id="5"></div>
+            </div>
         </div>
     </main>
     <script src='https://code.jquery.com/jquery-3.6.0.min.js'
         integrity='sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=' crossorigin='anonymous'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@2.3.0/build/global/luxon.min.js"
+        integrity="sha256-eWGhq5jRZ5QSi+PQuJt0eg4+hGCTwtsR9Qo+mC6Lyco=" crossorigin="anonymous"></script>;
     <script src='./assets/js/script.js'></script>
 </body>
 
