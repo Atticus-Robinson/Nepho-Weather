@@ -309,6 +309,7 @@ footer {
     box-sizing: border-box;
     display: flex;
     justify-content: center;
+    padding: 1vh 2vw !important;
   }
 
   .input-field {
@@ -321,10 +322,20 @@ footer {
     margin: 0;
   }
 
+  .input-field > .btn {
+    width: 18vw;
+    font-size: 3vw;
+    padding: 0;
+  }
+
   input {
     height: 100%;
     padding-left: 5vw;
     width: 20vw !important;
+  }
+
+  input::placeholder {
+    font-size: 3vw;
   }
 
   .search-history {
