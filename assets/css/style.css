@@ -335,6 +335,10 @@ footer {
     height: 20%;
   }
 
+  .day img{
+      width: 20%;
+  }
+
   footer {
     justify-content: center;
   }
