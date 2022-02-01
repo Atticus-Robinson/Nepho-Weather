@@ -294,6 +294,10 @@ footer {
     justify-content: center;
   }
 
+  header h3 {
+    font-size: 6vw;
+  }
+
   main {
     height: 89vh;
     flex-direction: column;
