@@ -307,13 +307,29 @@ footer {
     height: 10%;
     width: 100%;
     box-sizing: border-box;
+    display: flex;
+    justify-content: center;
   }
 
   .input-field {
+    box-sizing: border-box;
     width: 90%;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 1rem;
+    margin: 0;
+  }
+
+  input {
+    height: 100%;
+    padding-left: 5vw;
+    width: 20vw !important;
+  }
+
+  .search-history {
+    height: 0;
+    width: 0;
   }
 
   .weather {
@@ -322,10 +338,6 @@ footer {
 
   .weather-info {
     height: 50%;
-  }
-
-  input[type="text"]::placeholder {
-    padding-left: 10px;
   }
 
   .five-day {
