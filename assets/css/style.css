@@ -289,42 +289,65 @@ footer {
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
-
 }
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (max-width: 900px) {
-    header {
-        height: 8vh;
-        justify-content: center;
-    }
+  header {
+    height: 8vh;
+    justify-content: center;
+  }
 
-    main {
-        height: 89vh;
-    }
-    
-    .five-day {
-        flex-direction: column;
-    }
+  main {
+    height: 89vh;
+    flex-direction: column;
+  }
 
-    .day {
-        flex-direction: row;
-        width: 100%;
-        height: 20%;
-    }
+  .search {
+    height: 10%;
+    width: 100%;
+    box-sizing: border-box;
+  }
 
-    footer {
-        justify-content: center;
-    }
+  .input-field {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .weather {
+    height: 90%;
+  }
+
+  .weather-info {
+    height: 50%;
+  }
+
+  input[type="text"]::placeholder {
+    padding-left: 10px;
+  }
+
+  .five-day {
+    flex-direction: column;
+    height: 50%;
+  }
+
+  .day {
+    flex-direction: row;
+    width: 100%;
+    height: 20%;
+  }
+
+  footer {
+    justify-content: center;
+  }
 }
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-  
 }
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-  
 }
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
-
 }

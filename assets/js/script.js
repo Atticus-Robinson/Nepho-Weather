@@ -400,3 +400,11 @@ $(".search-history").on("click", "li", function (event) {
 $("document").ready(function () {
   retieveHistory();
 });
+
+//Change seach history class on small screen size
+if (window.matchMedia('(max-width: 900px)').matches) 
+{
+    $('ul').css('visibility', 'hidden');
+    $('.search').removeClass('s3').addClass('s12');
+    $('.weather').removeClass('s3').addClass('s12');
+}
