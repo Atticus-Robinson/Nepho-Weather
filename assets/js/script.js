@@ -11,13 +11,13 @@ const historyArray = [];
 
 //Take a location input, pass to Geocode API, create Geocode object, return object
 async function convert(location) {
-  var googApi =
+  let googApi =
     "https://maps.googleapis.com/maps/api/geocode/json?address=" +
     location +
     "&key=AIzaSyD3SFsjzLRJjuS7MuUlRnfQT8kgo7iMIaQ";
-  var fetchReponse = await fetch(googApi);
+  let fetchReponse = await fetch(googApi);
   if (fetchReponse.ok) {
-    var googleData = await fetchReponse.json();
+    googleData = await fetchReponse.json();
   }
   return googleData;
 }
@@ -26,35 +26,35 @@ async function convert(location) {
 async function getWeatherInfo(googleObject) {
   coordinates.lat = googleObject.results[0].geometry.location.lat;
   coordinates.long = googleObject.results[0].geometry.location.lng;
-  var apiUrl =
+  let apiUrl =
     "https://api.openweathermap.org/data/2.5/onecall?lat=" +
     coordinates.lat +
     "&lon=" +
     coordinates.long +
     "&units=imperial&appid=bb91dbeea5be1f229728f70ee62875cc";
-  var fetchResponse = await fetch(apiUrl);
+  let fetchResponse = await fetch(apiUrl);
   if (fetchResponse.ok) {
-    var weatherData = await fetchResponse.json();
+    weatherData = await fetchResponse.json();
   }
   return weatherData;
 }
 
 //Take input text, convert to Geocode object, createHistory item from text, convert Geocode object to Weather object, create page displays
 async function displayWeather(text) {
-  let googleData = await convert(text);
+  googleData = await convert(text);
   createHistoryItem(googleData);
-  var locationName = googleData.results[0].formatted_address;
-  let weatherData = await getWeatherInfo(googleData);
+  let locationName = googleData.results[0].formatted_address;
+  weatherData = await getWeatherInfo(googleData);
   createInfoPage(weatherData, locationName);
   create5Day(weatherData, locationName);
 }
 
 //Take a Geocode object, and create a history item
 function createHistoryItem(googleDataObject) {
-  var same = 0;
-  var i = 0;
-  var shortArray = [];
-  var string = "";
+  let same = 0;
+  let i = 0;
+  const shortArray = [];
+  let string = "";
   const object = {
     neighborhood: "",
     city: "",
@@ -83,7 +83,7 @@ function createHistoryItem(googleDataObject) {
   });
 
   //Create array to display onto page
-  var displayArray = [
+  const displayArray = [
     object.neighborhood,
     object.city,
     object.admin1,
@@ -103,7 +103,7 @@ function createHistoryItem(googleDataObject) {
 
   //If the item to be stored already exists in the list, change same for check later
   $(".collection > li").each(function () {
-    var check = $(this).text();
+    let check = $(this).text();
     if (check === string) {
       same++;
       return same;
@@ -138,16 +138,16 @@ function createHistoryItem(googleDataObject) {
 function storeHistoryItem(arrayItem, arrayItem2) {
   let storeItem = `${arrayItem} ${arrayItem2}`;
   historyArray.unshift(storeItem);
-  var string = JSON.stringify(historyArray);
+  let string = JSON.stringify(historyArray);
   localStorage.setItem("nepho-history", string);
 }
 
 //Retrieve local storage
 function retieveHistory() {
-  var storage = localStorage.getItem("nepho-history");
+  let storage = localStorage.getItem("nepho-history");
 
   //Create array from storage parse
-  var array = JSON.parse(storage);
+  let array = JSON.parse(storage);
 
   //For each array item - convert to Google Geocode Object and call pass into createHistoryItem
   array.forEach(function (item) {
@@ -163,13 +163,14 @@ function createInfoPage(weatherObject, locationName) {
   let timezone = weatherObject.timezone;
 
   //Create Luxon object from timezone
+  //ISSUE --- Creating datetime object for now() rather than the location can results in day offset issues. If location is a day forward
   luxonObject = luxon.DateTime.now().setZone(timezone);
 
   //Store date display from Luxon object 'DATETIME_HUGE' e.g. Friday, October 14, 1983, 1:30 PM Eastern Daylight Time
-  var dateDisplay = luxonObject.toLocaleString(luxon.DateTime.DATETIME_HUGE);
+  let dateDisplay = luxonObject.toLocaleString(luxon.DateTime.DATETIME_HUGE);
 
   //Store icon code from weather object
-  var iconCode = weatherObject.current.weather[0].icon;
+  let iconCode = weatherObject.current.weather[0].icon;
 
   //Set fade panel status for use in checking animation. Value is depended on what the last animation was, either in or out
   fadeStatus = $(".fade-panel").attr("fade-status");
@@ -182,26 +183,26 @@ function createInfoPage(weatherObject, locationName) {
     //After duration of fade out, run fade in and change text. If text is changed before fade out completes the user will see the change
     setTimeout(function () {
       inFade();
-      var location = $("<h4>")
+      let location = $("<h4>")
         .addClass("info-location")
         .html(
           `${locationName}<img class="current-icon" src="http://openweathermap.org/img/wn/${iconCode}@2x.png"/>`
         );
-      var date = $("<p>").addClass("current-date").text(dateDisplay);
-      var temp = $("<p>")
+      let date = $("<p>").addClass("current-date").text(dateDisplay);
+      let temp = $("<p>")
         .addClass("current-temp")
         .html(
           `Temperature: ${weatherObject.current.temp} <span>&#176;</span>F`
         );
-      var wind = $("<p>")
+      let wind = $("<p>")
         .addClass("current-wind")
         .text(`Wind Speed: ${weatherObject.current.wind_speed}mph`);
-      var humidity = $("<p>")
+      let humidity = $("<p>")
         .addClass("current-humidity" + "%")
         .text(`Humidity: ${weatherObject.current.humidity}`);
       //Check UV against danger range
       uvChecker(weatherObject.current.uvi);
-      var uvIndex = $("<p>")
+      let uvIndex = $("<p>")
         .addClass("current-uv ")
         .html(
           `${uvCat} UV Index: <span class="${uvColor} ${uvText} uvSpan">${weatherObject.current.uvi}</span>`
@@ -215,23 +216,23 @@ function createInfoPage(weatherObject, locationName) {
   //If there is no fade status present, no animations have been run. No need for fade out
   if (!fadeStatus) {
     inFade();
-    var location = $("<h4>")
+    let location = $("<h4>")
       .addClass("info-location")
       .html(
         `${locationName}<img class="current-icon" src="http://openweathermap.org/img/wn/${iconCode}@2x.png"/>`
       );
-    var date = $("<p>").addClass("current-date").text(dateDisplay);
-    var temp = $("<p>")
+    let date = $("<p>").addClass("current-date").text(dateDisplay);
+    let temp = $("<p>")
       .addClass("current-temp")
       .html(`Temperature: ${weatherObject.current.temp} <span>&#176;</span>F`);
-    var wind = $("<p>")
+    let wind = $("<p>")
       .addClass("current-wind")
       .text(`Wind Speed: ${weatherObject.current.wind_speed}mph`);
-    var humidity = $("<p>")
+    let humidity = $("<p>")
       .addClass("current-humidity" + "%")
       .text(`Humidity: ${weatherObject.current.humidity}`);
     uvChecker(weatherObject.current.uvi);
-    var uvIndex = $("<p>")
+    let uvIndex = $("<p>")
       .addClass("current-uv ")
       .html(
         `${uvCat} UV Index: <span class="${uvColor} ${uvText} uvSpan">${weatherObject.current.uvi}</span>`
@@ -259,27 +260,27 @@ function create5Day(weatherObject) {
         let increment = $(this).attr("id");
 
         //Create Luxon object from selected day (increment days in the future)
-        var date = luxon.DateTime.now().plus({
+        let date = luxon.DateTime.now().plus({
           days: increment,
         });
-        var dateDisplay = $("<p>")
+        let dateDisplay = $("<p>")
           .addClass("card-date")
           .text(date.toLocaleString(luxon.DateTime.DATE_SHORT));
 
-        var iconCode = weatherObject.daily[increment].weather[0].icon;
-        var icon = $("<img>")
+        let iconCode = weatherObject.daily[increment].weather[0].icon;
+        let icon = $("<img>")
           .addClass("card-icon")
           .attr("src", `http://openweathermap.org/img/wn/${iconCode}@2x.png`);
 
-        var high = weatherObject.daily[increment].temp.max;
-        var low = weatherObject.daily[increment].temp.min;
-        var temp = $("<p>").addClass("card-temp").text(`L${low}/H${high}`);
+        let high = weatherObject.daily[increment].temp.max;
+        let low = weatherObject.daily[increment].temp.min;
+        let temp = $("<p>").addClass("card-temp").text(`L${low}/H${high}`);
 
-        var wind = $("<p>")
+        let wind = $("<p>")
           .addClass("card-wind")
           .text(`${weatherObject.daily[increment].wind_speed}mph`);
 
-        var humidity = $("<p>")
+        let humidity = $("<p>")
           .addClass("card-humidity")
           .text(`${weatherObject.daily[increment].humidity}%`);
 
@@ -294,27 +295,27 @@ function create5Day(weatherObject) {
     $(".five-day > div").each(function () {
       let increment = $(this).attr("id");
 
-      var date = luxon.DateTime.now().plus({
+      let date = luxon.DateTime.now().plus({
         days: increment,
       });
-      var dateDisplay = $("<p>")
+      let dateDisplay = $("<p>")
         .addClass("card-date")
         .text(date.toLocaleString(luxon.DateTime.DATE_SHORT));
 
-      var iconCode = weatherObject.daily[increment].weather[0].icon;
-      var icon = $("<img>")
+      let iconCode = weatherObject.daily[increment].weather[0].icon;
+      let icon = $("<img>")
         .addClass("card-icon")
         .attr("src", `http://openweathermap.org/img/wn/${iconCode}@2x.png`);
 
-      var high = weatherObject.daily[increment].temp.max;
-      var low = weatherObject.daily[increment].temp.min;
-      var temp = $("<p>").addClass("card-temp").text(`L ${low}/ H ${high}`);
+      let high = weatherObject.daily[increment].temp.max;
+      let low = weatherObject.daily[increment].temp.min;
+      let temp = $("<p>").addClass("card-temp").text(`L ${low}/ H ${high}`);
 
-      var wind = $("<p>")
+      let wind = $("<p>")
         .addClass("card-wind")
         .text(`${weatherObject.daily[increment].wind_speed}mph`);
 
-      var humidity = $("<p>")
+      let humidity = $("<p>")
         .addClass("card-humidity")
         .text(`${weatherObject.daily[increment].humidity}%`);
       $(this).html("");
@@ -392,7 +393,7 @@ $("#location").keypress(function (e) {
 //When a search history item is clicked, display weather for that location
 $(".search-history").on("click", "li", function (event) {
   event.preventDefault();
-  var itemText = $(event.target).text();
+  let itemText = $(event.target).text();
   displayWeather(itemText);
 });
 
