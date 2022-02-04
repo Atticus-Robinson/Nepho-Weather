@@ -1,5 +1,4 @@
 var googleData, weatherData;
-var objectMatch;
 var fadeStatus;
 var uvCat = "";
 var uvColor = "";
@@ -39,13 +38,16 @@ async function getWeatherInfo(googleObject) {
 }
 
 //Take input text, convert to Geocode object, createHistory item from text, convert Geocode object to Weather object, create page displays
-async function displayWeather(text) {
-  googleData = await convert(text);
-  createHistoryItem(googleData);
-  let locationName = googleData.results[0].formatted_address;
-  weatherData = await getWeatherInfo(googleData);
-  createInfoPage(weatherData, locationName);
-  create5Day(weatherData, locationName);
+function displayWeather(text) {
+  googleData = convert(text).then(function () {
+    let locationName = googleData.results[0].formatted_address;
+    weatherData = getWeatherInfo(googleData).then(function () {
+      console.log(googleData);
+      createHistoryItem(googleData);
+      createInfoPage(weatherData, locationName);
+      create5Day(weatherData, locationName);
+    });
+  });
 }
 
 //Take a Geocode object, and create a history item
@@ -143,16 +145,16 @@ function storeHistoryItem(arrayItem, arrayItem2) {
 
 //Retrieve local storage
 function retieveHistory() {
+  //debugger;
   let storage = localStorage.getItem("nepho-history");
 
   //Create array from storage parse
   let array = JSON.parse(storage);
 
   //For each array item - convert to Google Geocode Object and call pass into createHistoryItem
-  array.forEach(function (item) {
-    convert(item).then(function (response) {
-      createHistoryItem(response);
-    });
+  array.forEach(async function (item) {
+    let value = await convert(item);
+    createHistoryItem(value);
   });
 }
 
