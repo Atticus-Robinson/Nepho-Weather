@@ -1,4 +1,3 @@
-var searchText;
 var googleData, weatherData;
 var objectMatch;
 var fadeStatus;
@@ -372,6 +371,7 @@ function uvChecker(uvIndex) {
 }
 
 //Submit click event
+/*
 $("#search-button").on("click", function () {
   searchText = $("#location").val();
   $("#location").val("");
@@ -387,6 +387,18 @@ $("#location").keypress(function (e) {
     if (searchText) {
       displayWeather(searchText);
     }
+  }
+});
+*/
+$(".location-input").on("keyup click", function (e) {
+  let box = $(e.target).attr("id");
+  searchText = $("#location").val();
+  if (
+    (box === "location" && e.which == 13) ||
+    (box === "search-button" && e.type === "click")
+  ) {
+    $("#location").val("");
+    displayWeather(searchText);
   }
 });
 
