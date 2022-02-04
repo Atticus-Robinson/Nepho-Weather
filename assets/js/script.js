@@ -152,6 +152,7 @@ function retieveHistory() {
   let array = JSON.parse(storage);
 
   //For each array item - convert to Google Geocode Object and call pass into createHistoryItem
+  if(!array) return;
   array.forEach(async function (item) {
     let value = await convert(item);
     createHistoryItem(value);
