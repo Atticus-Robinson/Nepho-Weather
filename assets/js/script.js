@@ -344,9 +344,8 @@ function outFade() {
   $(".fade-panel").fadeOut(1000).attr("fade-status", "out");
 }
 
-//Check uvIndex, then store danger level, color of display span, and text color of display span. Colors are materialize classes
+//Check uvIndex, then store danger level, color of display span, and text color of display span. Colors are materialize classes.
 function uvChecker(uvIndex) {
-  uvIndex = parseInt(uvIndex);
   if (uvIndex <= 2) {
     uvCat = "Low";
     uvColor = "green";
@@ -370,29 +369,10 @@ function uvChecker(uvIndex) {
   }
 }
 
-//Submit click event
-/*
-$("#search-button").on("click", function () {
-  searchText = $("#location").val();
-  $("#location").val("");
-  if (searchText) {
-    displayWeather(searchText);
-  }
-});
-//Enter key event
-$("#location").keypress(function (e) {
-  if (e.which == 13) {
-    searchText = $("#location").val();
-    $("#location").val("");
-    if (searchText) {
-      displayWeather(searchText);
-    }
-  }
-});
-*/
+//On clicking or keypressing in the search area. Execute display weather with search text
 $(".location-input").on("keyup click", function (e) {
   let box = $(e.target).attr("id");
-  searchText = $("#location").val();
+  let searchText = $("#location").val();
   if (
     (box === "location" && e.which == 13) ||
     (box === "search-button" && e.type === "click")
